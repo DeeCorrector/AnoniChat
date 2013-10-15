@@ -10,7 +10,8 @@ window.onload = function() {
         if(data.message) {
             console.log(socket);
             content.innerHTML += '<b>' + (data.from === me.id ? 'Me' : 'Stranger') + ': </b>';
-            content.innerHTML += data.message + '</br>';   
+            content.innerHTML += data.message + '</br>';
+            content.scrollTop = content.scrollHeight;
         } 
         else {
             console.log("There is a problem:", data);
@@ -44,6 +45,10 @@ window.onload = function() {
         var criteria = {};
         socket.emit('findPartner',criteria);
     });
+
+    $('#form').live("submit", function() {
+        $('#send').focus().click();
+    });
  
     send.onclick = function() {
 
@@ -51,6 +56,7 @@ window.onload = function() {
             var text = msg.value;
             msg.value = "";
             socket.emit('sendMessage', { message: text, from: me.id, to: me.partnerID });
+            $('#msg').focus();
         }
         else {
             alert("Can't send message while still looking for partner!");
